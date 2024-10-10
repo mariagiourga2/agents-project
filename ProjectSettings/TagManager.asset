@@ -8,9 +8,20 @@ TagManager:
   - Building
   - Road
   - Park
-  - AgentHome
   - Cars
   - Props
+  - ImportantBuildings
+  - Home1
+  - Home2
+  - Home3
+  - Home4
+  - Home5
+  - B
+  - M
+  - S
+  - D
+  - F
+  - G
   layers:
   - Default
   - TransparentFX

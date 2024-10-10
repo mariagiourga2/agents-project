@@ -21,7 +21,17 @@ public class CityMap : MonoBehaviour
 
         // Εύρεση αντικειμένων στον κόσμο μέσω tags
         GameObject[] buildings = GameObject.FindGameObjectsWithTag("Building");
-        GameObject[] agentHomes = GameObject.FindGameObjectsWithTag("AgentHome");
+        GameObject[] bakery = GameObject.FindGameObjectsWithTag("B");
+        GameObject[] superMarket = GameObject.FindGameObjectsWithTag("M");
+        GameObject[] stadium = GameObject.FindGameObjectsWithTag("S");
+        GameObject[] drugStore = GameObject.FindGameObjectsWithTag("D");
+        GameObject[] gasStation = GameObject.FindGameObjectsWithTag("G");
+        GameObject[] facrory = GameObject.FindGameObjectsWithTag("F");
+        GameObject[] agentHome1 = GameObject.FindGameObjectsWithTag("Home1");
+        GameObject[] agentHome2 = GameObject.FindGameObjectsWithTag("Home2");
+        GameObject[] agentHome3 = GameObject.FindGameObjectsWithTag("Home3");
+        GameObject[] agentHome4 = GameObject.FindGameObjectsWithTag("Home4");
+        GameObject[] agentHome5 = GameObject.FindGameObjectsWithTag("Home5");
         GameObject[] roads = GameObject.FindGameObjectsWithTag("Road");
         GameObject[] parks = GameObject.FindGameObjectsWithTag("Park");
         GameObject[] props = GameObject.FindGameObjectsWithTag("Props");
@@ -34,13 +44,83 @@ public class CityMap : MonoBehaviour
             string description = $"Building at position (x: {pos.x}, y: {pos.y}, z: {pos.z}) marked as '*'";
             cityDescription.Add(description);
         }
+        // Καταγραφή των σημαντικών κτιρίων
+        //Φούρνος
+        foreach (GameObject building in bakery)
+        {
+            Vector3 pos = building.transform.position;
+            string description = $"Bakery at position (x: {pos.x}, y: {pos.y}, z: {pos.z}) marked as 'B'";
+            cityDescription.Add(description);
+        }
+        //Super Market
+        foreach (GameObject building in superMarket)
+        {
+            Vector3 pos = building.transform.position;
+            string description = $"Super Market at position (x: {pos.x}, y: {pos.y}, z: {pos.z}) marked as 'M'";
+            cityDescription.Add(description);
+        }
+        //Στάδιο
+        foreach (GameObject building in stadium)
+        {
+            Vector3 pos = building.transform.position;
+            string description = $"Stadium at position (x: {pos.x}, y: {pos.y}, z: {pos.z}) marked as 'S'";
+            cityDescription.Add(description);
+        }
+        //Φαρμακείο
+        foreach (GameObject building in drugStore)
+        {
+            Vector3 pos = building.transform.position;
+            string description = $"Drug Store at position (x: {pos.x}, y: {pos.y}, z: {pos.z}) marked as 'D'";
+            cityDescription.Add(description);
+        }
+        //Βενζινάδικο
+        foreach (GameObject building in gasStation)
+        {
+            Vector3 pos = building.transform.position;
+            string description = $"Gas Station at position (x: {pos.x}, y: {pos.y}, z: {pos.z}) marked as 'G'";
+            cityDescription.Add(description);
+        }
+        //Εργοστάσιο
+        foreach (GameObject building in facrory)
+        {
+            Vector3 pos = building.transform.position;
+            string description = $"Factory at position (x: {pos.x}, y: {pos.y}, z: {pos.z}) marked as 'F'";
+            cityDescription.Add(description);
+        }
 
         // Καταγραφή των σπιτιών πρακτόρων
-        foreach (GameObject home in agentHomes)
+        foreach (GameObject home in agentHome1)
         {
             Vector3 pos = home.transform.position;
-            int digit = UnityEngine.Random.Range(0, 10);  // Χρήση ψηφίων 0-9
-            string description = $"AgentHome at position (x: {pos.x}, y: {pos.y}, z: {pos.z}) marked as '{digit}'";
+            string description = $"AgentHome1 at position (x: {pos.x}, y: {pos.y}, z: {pos.z}) marked as '1'";
+            cityDescription.Add(description);
+        }
+
+        foreach (GameObject home in agentHome2)
+        {
+            Vector3 pos = home.transform.position;
+            string description = $"AgentHome2 at position (x: {pos.x}, y: {pos.y}, z: {pos.z}) marked as '2'";
+            cityDescription.Add(description);
+        }
+
+        foreach (GameObject home in agentHome3)
+        {
+            Vector3 pos = home.transform.position;
+            string description = $"AgentHome3 at position (x: {pos.x}, y: {pos.y}, z: {pos.z}) marked as '3'";
+            cityDescription.Add(description);
+        }
+
+        foreach (GameObject home in agentHome4)
+        {
+            Vector3 pos = home.transform.position;
+            string description = $"AgentHome4 at position (x: {pos.x}, y: {pos.y}, z: {pos.z}) marked as '4'";
+            cityDescription.Add(description);
+        }
+
+        foreach (GameObject home in agentHome5)
+        {
+            Vector3 pos = home.transform.position;
+            string description = $"AgentHome5 at position (x: {pos.x}, y: {pos.y}, z: {pos.z}) marked as '5'";
             cityDescription.Add(description);
         }
 
