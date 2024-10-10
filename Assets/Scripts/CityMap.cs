@@ -27,6 +27,7 @@ public class CityMap : MonoBehaviour
         GameObject[] drugStore = GameObject.FindGameObjectsWithTag("D");
         GameObject[] gasStation = GameObject.FindGameObjectsWithTag("G");
         GameObject[] facrory = GameObject.FindGameObjectsWithTag("F");
+        GameObject[] Energy_Pot = GameObject.FindGameObjectsWithTag("E");
         GameObject[] agentHome1 = GameObject.FindGameObjectsWithTag("Home1");
         GameObject[] agentHome2 = GameObject.FindGameObjectsWithTag("Home2");
         GameObject[] agentHome3 = GameObject.FindGameObjectsWithTag("Home3");
@@ -36,6 +37,7 @@ public class CityMap : MonoBehaviour
         GameObject[] parks = GameObject.FindGameObjectsWithTag("Park");
         GameObject[] props = GameObject.FindGameObjectsWithTag("Props");
         GameObject[] cars = GameObject.FindGameObjectsWithTag("Cars");
+
 
         // Καταγραφή των ασήμαντων κτιρίων
         foreach (GameObject building in buildings)
@@ -87,7 +89,13 @@ public class CityMap : MonoBehaviour
             string description = $"Factory at position (x: {pos.x}, y: {pos.y}, z: {pos.z}) marked as 'F'";
             cityDescription.Add(description);
         }
-
+        //Energy Pots
+        foreach (GameObject building in Energy_Pot)
+        {
+            Vector3 pos = building.transform.position;
+            string description = $"EnergyPot at position (x: {pos.x}, y: {pos.y}, z: {pos.z}) marked as 'E'";
+            cityDescription.Add(description);
+        }
         // Καταγραφή των σπιτιών πρακτόρων
         foreach (GameObject home in agentHome1)
         {
