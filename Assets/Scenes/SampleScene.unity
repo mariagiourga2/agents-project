@@ -85614,7 +85614,7 @@ Transform:
   m_GameObject: {fileID: 919132148509991415}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 572.12, y: 0.003, z: 323.31}
+  m_LocalPosition: {x: 572.12, y: 0.191, z: 323.31}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -85660,7 +85660,7 @@ Transform:
   m_GameObject: {fileID: 919132149377220767}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 455.4, y: -0.005, z: 500.1}
+  m_LocalPosition: {x: 455.4, y: 0.196, z: 500.1}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -86111,6 +86111,7 @@ GameObject:
   - component: {fileID: 5866666020409303351}
   - component: {fileID: 5866666020409303352}
   - component: {fileID: 5866666020409303353}
+  - component: {fileID: 5866666020409303354}
   m_Layer: 0
   m_Name: JoshIdle
   m_TagString: Untagged
@@ -92498,7 +92499,7 @@ Transform:
   m_GameObject: {fileID: 1083184715470118499}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalPosition: {x: -0, y: 0.159, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -93670,6 +93671,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.7821045, y: 1.796381, z: 0.5644531}
   m_Center: {x: -0.037597656, y: 0.9931655, z: -0.0140686035}
+--- !u!114 &5866666020409303354
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 919132148509991415}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7266325319f4e134bb6ad8aef67fdc15, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!95 &5866666021438393350
 Animator:
   serializedVersion: 5
