@@ -60983,6 +60983,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e1777f6d9b927e40be08d727d9fda79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  open: 100
+  range: 10
   _speed: 60
 --- !u!114 &1597952377
 MonoBehaviour:
@@ -85376,6 +85378,11 @@ PrefabInstance:
       propertyPath: m_Follow
       value: 
       objectReference: {fileID: 291831887418219524}
+    - target: {fileID: 2070925441746177913, guid: a1a802ecaf6775746bb2a929fb554ad8,
+        type: 3}
+      propertyPath: m_LookAt
+      value: 
+      objectReference: {fileID: 543450652230302541}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -86027,7 +86034,7 @@ Transform:
   m_GameObject: {fileID: 919132148509991415}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 553.58, y: 0.191, z: 329.51}
+  m_LocalPosition: {x: 548.07, y: -0.003, z: 334.41}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -94058,6 +94065,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3e1777f6d9b927e40be08d727d9fda79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  open: 100
+  range: 10
   _speed: 60
 --- !u!114 &5866666020409303362
 MonoBehaviour:
