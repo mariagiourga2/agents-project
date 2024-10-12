@@ -38,11 +38,10 @@ public class CityMap : MonoBehaviour
         GameObject[] roads = GameObject.FindGameObjectsWithTag("Road");
         GameObject[] parks = GameObject.FindGameObjectsWithTag("Park");
         GameObject[] props = GameObject.FindGameObjectsWithTag("Props");
-        GameObject[] cars = GameObject.FindGameObjectsWithTag("Cars");
         GameObject[] agents = GameObject.FindGameObjectsWithTag("A");
-       
 
-        foreach(GameObject Agent in agents )
+        // Καταγραφή πρακτόρων
+        foreach (GameObject Agent in agents )
         {
             Vector3 pos= Agent.transform.localPosition;
             string description = $"Agent at position (x: {pos.x}, y: {pos.y}, z: {pos.z}) marked as 'A'";
@@ -169,15 +168,6 @@ public class CityMap : MonoBehaviour
             string description = $"Prop at position (x: {pos.x}, y: {pos.y}, z: {pos.z}) marked as 'X'";
             cityDescription.Add(description);
         }
-
-        // Καταγραφή των αυτοκινήτων
-        foreach (GameObject car in cars)
-        {
-            Vector3 pos = car.transform.localPosition;
-            string description = $"Car at position (x: {pos.x}, y: {pos.y}, z: {pos.z}) marked as 'C'";
-            cityDescription.Add(description);
-        }
-
         // Εξαγωγή της περιγραφής σε αρχείο κειμένου
         try
         {
