@@ -10,8 +10,7 @@ public class InventoryUI : MonoBehaviour
     
     void Start()
     {
-        diamondText = GetComponent<TextMeshProUGUI>();
-        
+        diamondText = GetComponent<TextMeshProUGUI>();        
     }
     
     public void UpdateDiamondText(PlayerInventory playerInventory)

@@ -10,17 +10,15 @@ public class Timer : MonoBehaviour
     [SerializeField] TextMeshProUGUI TextE;
     [SerializeField] float energy = 100f;
     [SerializeField] float remainingTime;
+    public float RemainingTime => remainingTime;
 
-    // Update is called once per frame
     void Update()
     {
 
         if (remainingTime > 0)
         {
             remainingTime -= Time.deltaTime;
-            //energy = Mathf.Clamp(energy - Time.deltaTime * 2, 0, 100);
             energy = Mathf.Clamp(energy - Time.deltaTime * 1, 0, 100);
-            //energy = Mathf.Clamp(energy - Time.deltaTime * 0.5f, 0, 100);
         }
 
         else if (remainingTime < 0)
