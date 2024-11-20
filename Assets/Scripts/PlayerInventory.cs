@@ -10,14 +10,12 @@ using static UnityEngine.EventSystems.EventTrigger;
 public class PlayerInventory : MonoBehaviour
 {
     public int NumberOfDiamonds { get; private set; }
-    
-    
     public UnityEvent<PlayerInventory> OnDiamondCollected;
     public UnityEvent<PlayerInventory> OnHeartCollected;
     public int maxHealth = 100;
     public int currentHealth;
     public HealthBar healthBar;
-    private TextMeshProUGUI TextE;
+    [SerializeField] private TextMeshProUGUI TextE;
     private float timer = 0f;
     private float timeInterval = 1f;
 
@@ -25,6 +23,12 @@ public class PlayerInventory : MonoBehaviour
     {
         currentHealth = maxHealth;
         healthBar.SetMaxHeath(maxHealth);
+        TextE = GameObject.Find("TextE")
+            .GetComponent<TextMeshProUGUI>();
+        if (TextE == null)
+        {
+            Debug.LogError("TextE not found! Check your object name or assignment.");
+        }
     }
 
     public void Update()
@@ -34,6 +38,10 @@ public class PlayerInventory : MonoBehaviour
         {
             timer = 0f;
             TakeDamage(1);
+        }
+        else if(TextE != null)
+{
+            TextE.text = currentHealth.ToString();
         }
     }
    
@@ -49,7 +57,7 @@ public class PlayerInventory : MonoBehaviour
         {
             currentHealth = currentHealth + 20;
             healthBar.SetHeath(currentHealth);
-            //TextE.text = currentHealth.ToString();
+            TextE.text = Mathf.FloorToInt(currentHealth).ToString();
             Debug.Log(currentHealth.ToString());
             OnHeartCollected.Invoke(this);
         }
@@ -57,7 +65,7 @@ public class PlayerInventory : MonoBehaviour
         {
             currentHealth = maxHealth;
             healthBar.SetHeath(currentHealth);
-            //TextE.text =currentHealth.ToString();
+            TextE.text = Mathf.FloorToInt(currentHealth).ToString();
             Debug.Log(currentHealth.ToString());
             OnHeartCollected.Invoke(this);
         }
