@@ -9,6 +9,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1919757049729630115}
+  - component: {fileID: 8068953626331815625}
+  - component: {fileID: 1801570559704959908}
   m_Layer: 0
   m_Name: Health
   m_TagString: Untagged
@@ -24,7 +26,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7857229009381521993}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0.6340455, z: -0, w: 0.77329576}
+  m_LocalRotation: {x: 0, y: -0.6340424, z: 0, w: 0.7732984}
   m_LocalPosition: {x: 560.7973, y: 0.35000002, z: 333.277}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -32,6 +34,39 @@ Transform:
   - {fileID: 7070793071070129586}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: -78.698, z: 0}
+--- !u!65 &8068953626331815625
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7857229009381521993}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.5517523, y: 1.7316006, z: 0.9800668}
+  m_Center: {x: -0.67405665, y: 0.36580032, z: 1.462783}
+--- !u!114 &1801570559704959908
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7857229009381521993}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72bf0aa2479a3e94aa0afd00211a753d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7074791248848420026
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class HealthBar : MonoBehaviour
 {
     public Slider slider;
+    
     public void SetMaxHeath(int heath)
     {
         slider.maxValue = heath;
@@ -15,4 +17,5 @@ public class HealthBar : MonoBehaviour
     {
         slider.value = heath;
     }
+    
 }
