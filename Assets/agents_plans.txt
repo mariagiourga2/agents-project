@@ -1,45 +1,45 @@
 BEGINPLAN Agent 1
+Action: Visit, Target: (-49.90, 0.00, 18.00), Description: Visit Gas Station
+Action: Visit, Target: (-166.60, 0.00, -54.00), Description: Visit Bakery
+Action: Visit, Target: (-48.20, 0.00, -33.71), Description: Visit Factory
+Action: Visit, Target: (-49.10, 0.00, -84.10), Description: Visit Bakery
+Action: Visit, Target: (-182.13, 0.00, -24.91), Description: Visit Drug Store
 Action: Visit, Target: (-226.60, 0.00, 21.60), Description: Visit Super Market
 Action: Visit, Target: (-106.60, 0.00, 18.10), Description: Visit Stadium
-Action: Collect, Target: (-182.13, 0.00, -24.91), Description: Collect Medicine
-Action: Visit, Target: (-166.60, 0.00, -54.00), Description: Visit Bakery
-Action: Visit, Target: (-49.10, 0.00, -84.10), Description: Visit Bakery
-Action: Refuel, Target: (-49.90, 0.00, 18.00), Description: Refuel at Gas Station
-Action: Inspect, Target: (-48.20, 0.00, -33.71), Description: Inspect Factory
 ENDPLAN
 BEGINPLAN Agent 2
-Action: Collect, Target: (-182.13, 0.00, -24.91), Description: Collect Medicine
-Action: Refuel, Target: (-49.90, 0.00, 18.00), Description: Refuel at Gas Station
-Action: Visit, Target: (-106.60, 0.00, 18.10), Description: Visit Stadium
-Action: Visit, Target: (-226.60, 0.00, 21.60), Description: Visit Super Market
-Action: Inspect, Target: (-48.20, 0.00, -33.71), Description: Inspect Factory
 Action: Visit, Target: (-166.60, 0.00, -54.00), Description: Visit Bakery
 Action: Visit, Target: (-49.10, 0.00, -84.10), Description: Visit Bakery
+Action: Visit, Target: (-226.60, 0.00, 21.60), Description: Visit Super Market
+Action: Visit, Target: (-106.60, 0.00, 18.10), Description: Visit Stadium
+Action: Visit, Target: (-49.90, 0.00, 18.00), Description: Visit Gas Station
+Action: Visit, Target: (-48.20, 0.00, -33.71), Description: Visit Factory
+Action: Visit, Target: (-182.13, 0.00, -24.91), Description: Visit Drug Store
 ENDPLAN
 BEGINPLAN Agent 3
-Action: Inspect, Target: (-48.20, 0.00, -33.71), Description: Inspect Factory
+Action: Visit, Target: (-182.13, 0.00, -24.91), Description: Visit Drug Store
 Action: Visit, Target: (-226.60, 0.00, 21.60), Description: Visit Super Market
-Action: Refuel, Target: (-49.90, 0.00, 18.00), Description: Refuel at Gas Station
 Action: Visit, Target: (-106.60, 0.00, 18.10), Description: Visit Stadium
-Action: Collect, Target: (-182.13, 0.00, -24.91), Description: Collect Medicine
 Action: Visit, Target: (-166.60, 0.00, -54.00), Description: Visit Bakery
+Action: Visit, Target: (-48.20, 0.00, -33.71), Description: Visit Factory
+Action: Visit, Target: (-49.90, 0.00, 18.00), Description: Visit Gas Station
 Action: Visit, Target: (-49.10, 0.00, -84.10), Description: Visit Bakery
 ENDPLAN
 BEGINPLAN Agent 4
-Action: Inspect, Target: (-48.20, 0.00, -33.71), Description: Inspect Factory
-Action: Visit, Target: (-166.60, 0.00, -54.00), Description: Visit Bakery
-Action: Collect, Target: (-182.13, 0.00, -24.91), Description: Collect Medicine
-Action: Visit, Target: (-49.10, 0.00, -84.10), Description: Visit Bakery
-Action: Refuel, Target: (-49.90, 0.00, 18.00), Description: Refuel at Gas Station
-Action: Visit, Target: (-106.60, 0.00, 18.10), Description: Visit Stadium
 Action: Visit, Target: (-226.60, 0.00, 21.60), Description: Visit Super Market
+Action: Visit, Target: (-48.20, 0.00, -33.71), Description: Visit Factory
+Action: Visit, Target: (-106.60, 0.00, 18.10), Description: Visit Stadium
+Action: Visit, Target: (-49.90, 0.00, 18.00), Description: Visit Gas Station
+Action: Visit, Target: (-49.10, 0.00, -84.10), Description: Visit Bakery
+Action: Visit, Target: (-166.60, 0.00, -54.00), Description: Visit Bakery
+Action: Visit, Target: (-182.13, 0.00, -24.91), Description: Visit Drug Store
 ENDPLAN
 BEGINPLAN Agent 5
 Action: Visit, Target: (-226.60, 0.00, 21.60), Description: Visit Super Market
-Action: Collect, Target: (-182.13, 0.00, -24.91), Description: Collect Medicine
-Action: Visit, Target: (-106.60, 0.00, 18.10), Description: Visit Stadium
-Action: Refuel, Target: (-49.90, 0.00, 18.00), Description: Refuel at Gas Station
+Action: Visit, Target: (-182.13, 0.00, -24.91), Description: Visit Drug Store
+Action: Visit, Target: (-48.20, 0.00, -33.71), Description: Visit Factory
+Action: Visit, Target: (-49.90, 0.00, 18.00), Description: Visit Gas Station
 Action: Visit, Target: (-49.10, 0.00, -84.10), Description: Visit Bakery
-Action: Inspect, Target: (-48.20, 0.00, -33.71), Description: Inspect Factory
 Action: Visit, Target: (-166.60, 0.00, -54.00), Description: Visit Bakery
+Action: Visit, Target: (-106.60, 0.00, 18.10), Description: Visit Stadium
 ENDPLAN

@@ -38,10 +38,10 @@ public class CityMap : MonoBehaviour
         GameObject[] roads = GameObject.FindGameObjectsWithTag("Road");
         GameObject[] parks = GameObject.FindGameObjectsWithTag("Park");
         GameObject[] props = GameObject.FindGameObjectsWithTag("Props");
-        GameObject[] agents = GameObject.FindGameObjectsWithTag("A");
+        GameObject[] agent = GameObject.FindGameObjectsWithTag("A");
 
         // Καταγραφή πρακτόρων
-        foreach (GameObject Agent in agents )
+        foreach (GameObject Agent in agent )
         {
             Vector3 pos= Agent.transform.localPosition;
             string description = $"Agent at position (x: {pos.x}, y: {pos.y}, z: {pos.z}) marked as 'A'";

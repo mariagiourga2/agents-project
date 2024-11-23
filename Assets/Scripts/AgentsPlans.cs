@@ -14,6 +14,7 @@ public class AgentsPlans : MonoBehaviour
         filePath1 = Application.dataPath + "/city_description.txt";
         filePath2 = Application.dataPath + "/agents_plans.txt";
         CreatePlans();
+        ExecutePlans();
     }
 
     void CreatePlans()
@@ -107,6 +108,104 @@ public class AgentsPlans : MonoBehaviour
         float y = float.Parse(parts[2].Split(':')[1].Trim());
         float z = float.Parse(parts[3].Split(':')[1].Trim());
         return new Vector3(x, y, z);
+    }
+    void ExecutePlans()
+    {
+        try
+        {
+            // Διαβάζουμε τα πλάνα
+            List<string> agentsPlans = new List<string>(File.ReadAllLines(filePath2));
+
+            int currentAgent = -1; // Ορίζει ποιος πράκτορας εκτελείται
+            foreach (string line in agentsPlans)
+            {
+                if (line.StartsWith("BEGINPLAN"))
+                {
+                    currentAgent = ExtractAgentID(line); // Βρες το ID του Agent
+                }
+                else if (line.StartsWith("ENDPLAN"))
+                {
+                    currentAgent = -1; // Τερματισμός εκτέλεσης πλάνου
+                }
+                else if (currentAgent != -1)
+                {
+                    // Ανάλυση της γραμμής του πλάνου (λίστα στόχων)
+                    string[] targets = line.Split(' '); // Διαχωρισμός στόχων
+                    MoveAgent(currentAgent, targets);  // Μετακίνηση πράκτορα
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Error executing agent plans: " + e.Message);
+        }
+    }
+    void MoveAgent(int agentID, string[] targets)
+    {
+        // Βρες τον πράκτορα με βάση το όνομά του
+        GameObject agent = GameObject.Find($"Agent{agentID}");
+        if (agent != null)
+        {
+            Movement Movement = agent.GetComponent<Movement>();
+            if (Movement != null)
+            {
+                StartCoroutine(ExecuteTargetSequence(Movement, targets));
+            }
+        }
+        else
+        {
+            Debug.LogWarning($"Agent{agentID} not found in the scene!");
+        }
+    }
+
+    // Εκτέλεση της ακολουθίας στόχων
+    IEnumerator ExecuteTargetSequence(Movement Movement, string[] targets)
+    {
+        foreach (string target in targets)
+        {
+            // Εντοπισμός του επόμενου κτιρίου με βάση το συμβολισμό
+            GameObject building = FindBuildingBySymbol(target);
+            if (building != null)
+            {
+                Vector3 targetPosition = building.transform.position;
+                Movement.SetTarget(targetPosition);
+
+                // Περιμένουμε να φτάσει στον προορισμό
+                while (!Movement.HasReachedTarget())
+                {
+                    yield return null; // Συνεχίζει να περιμένει
+                }
+
+                // Μικρή καθυστέρηση (π.χ., παραμονή στο σημείο)
+                yield return new WaitForSeconds(1.0f);
+            }
+        }
+    }
+
+    // Μέθοδος για αναζήτηση κτιρίων βάσει συμβόλου
+    GameObject FindBuildingBySymbol(string symbol)
+    {
+        // Υποθέτουμε ότι τα κτίρια έχουν συγκεκριμένα tags ή ονόματα
+        GameObject[] buildings = GameObject.FindGameObjectsWithTag("Building");
+        foreach (GameObject building in buildings)
+        {
+            if (building.name.Contains(symbol)) // Π.χ., "B" για Bakery
+            {
+                return building;
+            }
+        }
+        return null;
+    }
+
+    // Εξαγωγή του ID από το όνομα του πράκτορα
+    int ExtractAgentID(string line)
+    {
+        string[] parts = line.Split(' ');
+        if (parts.Length >= 2 && int.TryParse(parts[1], out int id))
+        {
+            return id;
+        }
+        return -1; // Αν αποτύχει
     }
 
 }
