@@ -85,7 +85,6 @@ public class CityMap : MonoBehaviour
             
             Vector3 pos = D.transform.localPosition;
             string description = $"Drug Store at position (x: {pos.x}, y: {pos.y}, z: {pos.z}) marked as 'D'";
-            Debug.Log($"Drug Store at position (x: {pos.x}, y: {pos.y}, z: {pos.z}) marked as 'D'");
             cityDescription.Add(description);
         }
         //Βενζινάδικο

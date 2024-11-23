@@ -24,7 +24,7 @@ public class AgentController : MonoBehaviour
     }
 
 
-    private void Update()
+   /* private void Update()
     {
         // _agentInput = new Vector2(Input.GetAxisRaw("Horizontal") * _speed, Input.GetAxisRaw("Vertical") * _speed);
         bool isRunning = animator.GetBool("isRunning");
@@ -131,7 +131,7 @@ public class AgentController : MonoBehaviour
             animator.SetBool("isTurningLeft", true);
             animator.SetBool("isJumping", true);
         }
-    }
+    }*/
 
     /*private void FixedUpdate()
     {
