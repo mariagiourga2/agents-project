@@ -1,4 +1,8 @@
 ﻿Agent at position (x: 529.38, y: 0.05, z: 328.56) marked as 'A'
+Agent at position (x: 521.1, y: -0.001, z: 497.1) marked as 'A'
+Agent at position (x: 528.4, y: 0.098, z: 328.68) marked as 'A'
+Agent at position (x: 455.4, y: 0.196, z: 500.1) marked as 'A'
+Agent at position (x: 390.86, y: 0.005, z: 513.1) marked as 'A'
 Building at position (x: -122.35, y: 0.00, z: -41.68) marked as '*'
 Building at position (x: -149.34, y: 0.00, z: -23.23) marked as '*'
 Building at position (x: -13.60, y: 0.00, z: -85.40) marked as '*'
