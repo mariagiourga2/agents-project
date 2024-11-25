@@ -2,15 +2,23 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using UnityEditor.PackageManager;
 using UnityEngine;
+using UnityEngine.UIElements;
 
 public class AgentsPlans : MonoBehaviour
 {
     private string filePath1;
     private string filePath2;
-    
+    // private Dictionary<int, GameObject> agents = new Dictionary<int, GameObject>();
     void Start()
     {
+        /* GameObject[] allAgents = GameObject.FindGameObjectsWithTag("A");
+         for (int i = 0; i < allAgents.Length; i++)
+         {
+             agents[i + 1] = allAgents[i]; // Assuming Agent IDs start from 1
+         }*/
+
         filePath1 = Application.dataPath + "/city_description.txt";
         filePath2 = Application.dataPath + "/agents_plans.txt";
         CreatePlans();
@@ -95,19 +103,28 @@ public class AgentsPlans : MonoBehaviour
     public class AgentGoal
     {
         public Vector3 TargetPosition { get; set; }
-        public string Action {  get; set; }
+        public string Action { get; set; }
         public string Description { get; set; }
     }
 
     private Vector3 ExtractPosition(string line)
     {
-        // Παράδειγμα για εξαγωγή θέσης από μια γραμμή
-        // "Bakery at position (x: 10.0, y: 0.0, z: 15.0) marked as 'B'"
-        string[] parts = line.Split(new[] { '(', ',', ')' }, StringSplitOptions.RemoveEmptyEntries);
-        float x = float.Parse(parts[1].Split(':')[1].Trim());
-        float y = float.Parse(parts[2].Split(':')[1].Trim());
-        float z = float.Parse(parts[3].Split(':')[1].Trim());
-        return new Vector3(x, y, z);
+        try
+        {
+            string[] parts = line.Split(new[] { '(', ',', ')' }, StringSplitOptions.RemoveEmptyEntries);
+            float x = float.Parse(parts[1].Split(':')[1].Trim());
+            float y = float.Parse(parts[2].Split(':')[1].Trim());
+            float z = float.Parse(parts[3].Split(':')[1].Trim());
+            //return new Vector3(x, y, z);
+            Vector3 position = new Vector3(x, y, z);
+            Debug.Log($"Extracted position: {position}");
+            return position;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error extracting position from line '{line}': {e.Message}");
+            return Vector3.zero;
+        }
     }
     void ExecutePlans()
     {
@@ -142,14 +159,19 @@ public class AgentsPlans : MonoBehaviour
     }
     void MoveAgent(int agentID, string[] targets)
     {
-        // Βρες τον πράκτορα με βάση το όνομά του
+        Debug.Log($"Attempting to move Agent {agentID} with targets: {string.Join(", ", targets)}");
         GameObject agent = GameObject.Find($"Agent{agentID}");
         if (agent != null)
         {
-            Movement Movement = agent.GetComponent<Movement>();
-            if (Movement != null)
+            Movement movement = agent.GetComponent<Movement>();
+            if (movement != null)
             {
-                StartCoroutine(ExecuteTargetSequence(Movement, targets));
+                Debug.Log($"Starting movement sequence for {agent.name}");
+                StartCoroutine(ExecuteTargetSequence(movement, targets));
+            }
+            else
+            {
+                Debug.LogError($"Movement script missing on {agent.name}");
             }
         }
         else
@@ -158,54 +180,84 @@ public class AgentsPlans : MonoBehaviour
         }
     }
 
+    /* void MoveAgent(int agentID, string[] targets)
+     {
+         if (agents.TryGetValue(agentID, out GameObject agent))
+         {
+             Movement movement = agent.GetComponent<Movement>();
+             if (movement != null)
+             {
+                 Debug.Log($"Starting movement for {agent.name}");
+                 StartCoroutine(ExecuteTargetSequence(movement, targets));
+             }
+             else
+             {
+                 Debug.LogError($"Movement script missing on {agent.name}");
+             }
+         }
+         else
+         {
+             Debug.LogWarning($"Agent {agentID} not found!");
+         } 
+     }*/
+
+
     // Εκτέλεση της ακολουθίας στόχων
-    IEnumerator ExecuteTargetSequence(Movement Movement, string[] targets)
+    IEnumerator ExecuteTargetSequence(Movement movement, string[] targets)
     {
+        Debug.Log($"Executing target sequence for {movement.gameObject.name} with {targets.Length} targets.");
         foreach (string target in targets)
         {
-            // Εντοπισμός του επόμενου κτιρίου με βάση το συμβολισμό
+            Debug.Log($"Looking for building with symbol: {target}");
             GameObject building = FindBuildingBySymbol(target);
             if (building != null)
             {
                 Vector3 targetPosition = building.transform.position;
-                Movement.SetTarget(targetPosition);
+                Debug.Log($"{movement.gameObject.name} moving to {targetPosition} (Target: {target})");
+                movement.SetTarget(targetPosition);
 
-                // Περιμένουμε να φτάσει στον προορισμό
-                while (!Movement.HasReachedTarget())
+                while (!movement.HasReachedTarget())
                 {
-                    yield return null; // Συνεχίζει να περιμένει
+                    yield return null; // Wait until the agent reaches the target
                 }
 
-                // Μικρή καθυστέρηση (π.χ., παραμονή στο σημείο)
-                yield return new WaitForSeconds(1.0f);
+                Debug.Log($"{movement.gameObject.name} reached {targetPosition}");
+                yield return new WaitForSeconds(1.0f); // Simulate staying at the target
             }
-        }
-    }
-
-    // Μέθοδος για αναζήτηση κτιρίων βάσει συμβόλου
-    GameObject FindBuildingBySymbol(string symbol)
-    {
-        // Υποθέτουμε ότι τα κτίρια έχουν συγκεκριμένα tags ή ονόματα
-        GameObject[] buildings = GameObject.FindGameObjectsWithTag("Building");
-        foreach (GameObject building in buildings)
-        {
-            if (building.name.Contains(symbol)) // Π.χ., "B" για Bakery
+            else
             {
-                return building;
+                Debug.LogWarning($"Target {target} not found for {movement.gameObject.name}");
             }
         }
-        return null;
     }
 
-    // Εξαγωγή του ID από το όνομα του πράκτορα
-    int ExtractAgentID(string line)
-    {
-        string[] parts = line.Split(' ');
-        if (parts.Length >= 2 && int.TryParse(parts[1], out int id))
+
+
+    GameObject FindBuildingBySymbol(string symbol)
         {
-            return id;
+            GameObject[] buildings = GameObject.FindGameObjectsWithTag("Building");
+            foreach (GameObject building in buildings)
+            {
+                if (building.name.Contains(symbol)) // Ensure building name includes the symbol
+                {
+                    Debug.Log($"Found building {building.name} for symbol {symbol}");
+                    return building;
+                }
+            }
+            Debug.LogWarning($"Building with symbol {symbol} not found!");
+            return null;
         }
-        return -1; // Αν αποτύχει
-    }
 
+
+        // Εξαγωγή του ID από το όνομα του πράκτορα
+        int ExtractAgentID(string line)
+        {
+            string[] parts = line.Split(' ');
+            if (parts.Length >= 2 && int.TryParse(parts[1], out int id))
+            {
+                return id;
+            }
+            return -1; // Αν αποτύχει
+        }
+    
 }
