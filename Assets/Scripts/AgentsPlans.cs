@@ -2,27 +2,22 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using UnityEngine.UIElements;
 
 public class AgentsPlans : MonoBehaviour
 {
     private string filePath1;
     private string filePath2;
-    // private Dictionary<int, GameObject> agents = new Dictionary<int, GameObject>();
+
     void Start()
     {
-        /* GameObject[] allAgents = GameObject.FindGameObjectsWithTag("A");
-         for (int i = 0; i < allAgents.Length; i++)
-         {
-             agents[i + 1] = allAgents[i]; // Assuming Agent IDs start from 1
-         }*/
-
+        // Ορισμός διαδρομών αρχείων
         filePath1 = Application.dataPath + "/city_description.txt";
         filePath2 = Application.dataPath + "/agents_plans.txt";
+
+        // Δημιουργία νέων σχεδίων για τους πράκτορες και εκτέλεση αυτών
         CreatePlans();
-        ExecutePlans();
+        ExecutePlans(filePath2);
     }
 
     void CreatePlans()
@@ -35,47 +30,35 @@ public class AgentsPlans : MonoBehaviour
                 return;
             }
 
+            // Ανάγνωση της περιγραφής της πόλης
             List<string> cityDescription = new List<string>(File.ReadAllLines(filePath1));
-            List<AgentGoal> importantGoals = new List<AgentGoal>();
-
-            foreach (string line in cityDescription)
-            {
-                if (line.Contains("Bakery"))
-                    importantGoals.Add(new AgentGoal { TargetPosition = ExtractPosition(line), Action = "Visit", Description = "Visit Bakery" });
-                if (line.Contains("Super Market"))
-                    importantGoals.Add(new AgentGoal { TargetPosition = ExtractPosition(line), Action = "Visit", Description = "Visit Super Market" });
-                if (line.Contains("Stadium"))
-                    importantGoals.Add(new AgentGoal { TargetPosition = ExtractPosition(line), Action = "Visit", Description = "Visit Stadium" });
-                if (line.Contains("Drug Store"))
-                    importantGoals.Add(new AgentGoal { TargetPosition = ExtractPosition(line), Action = "Visit", Description = "Visit Drug Store" });
-                if (line.Contains("Gas Station"))
-                    importantGoals.Add(new AgentGoal { TargetPosition = ExtractPosition(line), Action = "Visit", Description = "Visit Gas Station" });
-                if (line.Contains("Factory"))
-                    importantGoals.Add(new AgentGoal { TargetPosition = ExtractPosition(line), Action = "Visit", Description = "Visit Factory" });
-            }
+            List<AgentGoal> importantGoals = ExtractImportantGoals(cityDescription);
 
             if (importantGoals.Count == 0)
             {
-                Debug.LogWarning("No goals found in city_description.txt!");
+                Debug.LogWarning("No important goals found in city_description.txt!");
                 return;
             }
 
-            List<string> agentsPlans = new List<string>();
+            // Αριθμός πρακτόρων
             int agentCount = 5;
+            List<string> agentsPlans = new List<string>();
 
+            // Δημιουργία σχεδίων για κάθε πράκτορα
             for (int i = 1; i <= agentCount; i++)
             {
-                agentsPlans.Add($"BEGINPLAN Agent {i}");
+                agentsPlans.Add($"{GetAgentName(i)}:");
+
                 Shuffle(importantGoals);
 
+                // Καταγραφή στόχων για κάθε πράκτορα
                 foreach (var goal in importantGoals)
                 {
-                    agentsPlans.Add($"Action: {goal.Action}, Target: {goal.TargetPosition}, Description: {goal.Description}");
+                    agentsPlans.Add($"  {goal.TargetPosition.ToString()}");
                 }
-
-                agentsPlans.Add("ENDPLAN");
             }
 
+            // Αποθήκευση των σχεδίων στο αρχείο
             File.WriteAllLines(filePath2, agentsPlans);
             Debug.Log("Agent plans successfully created at " + filePath2);
         }
@@ -85,8 +68,135 @@ public class AgentsPlans : MonoBehaviour
         }
     }
 
+    // Αποδοχή στόχων από την περιγραφή της πόλης
+    List<AgentGoal> ExtractImportantGoals(List<string> cityDescription)
+    {
+        List<AgentGoal> importantGoals = new List<AgentGoal>();
 
-    // Μέθοδος για τυχαία αναδιάταξη μιας λίστας
+        foreach (string line in cityDescription)
+        {
+            if (line.Contains("Bakery"))
+                importantGoals.Add(new AgentGoal("Visit", ExtractPosition(line), "Visit Bakery"));
+            if (line.Contains("Super Market"))
+                importantGoals.Add(new AgentGoal("Visit", ExtractPosition(line), "Visit Super Market"));
+            if (line.Contains("Stadium"))
+                importantGoals.Add(new AgentGoal("Visit", ExtractPosition(line), "Visit Stadium"));
+            if (line.Contains("Drug Store"))
+                importantGoals.Add(new AgentGoal("Visit", ExtractPosition(line), "Visit Drug Store"));
+            if (line.Contains("Gas Station"))
+                importantGoals.Add(new AgentGoal("Visit", ExtractPosition(line), "Visit Gas Station"));
+            if (line.Contains("Factory"))
+                importantGoals.Add(new AgentGoal("Visit", ExtractPosition(line), "Visit Factory"));
+        }
+
+        return importantGoals;
+    }
+
+    // Εκτέλεση των στόχων από το αρχείο
+    void ExecutePlans(string filePath)
+    {
+        try
+        {
+            Debug.Log($"Executing plans from file: {filePath}");
+            string[] lines = File.ReadAllLines(filePath);
+            Movement currentAgent = null;
+            List<AgentGoal> allGoals = new List<AgentGoal>();
+
+            // Διαβάζουμε και εκτελούμε τα σχέδια
+            foreach (string line in lines)
+            {
+                if (string.IsNullOrWhiteSpace(line)) continue;
+
+                if (line.Contains(":"))
+                {
+                    string agentName = line.Split(':')[0].Trim();
+                    currentAgent = FindAgentByName(agentName);
+                    if (currentAgent == null)
+                    {
+                        Debug.LogWarning($"Agent not found: {agentName}");
+                        continue;
+                    }
+                    continue;
+                }
+
+                // Αντιστοίχιση στόχου
+                if (currentAgent != null && line.Contains("("))
+                {
+                    Vector3 targetPosition = ParseTarget(line);
+                    if (targetPosition != Vector3.zero)
+                    {
+                        currentAgent.SetTarget(targetPosition);
+                        Debug.Log($"Assigned target {targetPosition} to {currentAgent.gameObject.name}");
+                    }
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error executing plans: {e.Message}");
+        }
+    }
+
+    // Ανάλυση στόχου από τη γραμμή κειμένου
+    Vector3 ParseTarget(string line)
+    {
+        try
+        {
+            string[] coords = line.Trim('(', ')').Split(',');
+            if (coords.Length == 3 &&
+                float.TryParse(coords[0], out float x) &&
+                float.TryParse(coords[1], out float y) &&
+                float.TryParse(coords[2], out float z))
+            {
+                return new Vector3(x, y, z);
+            }
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error parsing target from line '{line}': {e.Message}");
+        }
+        return Vector3.zero;
+    }
+
+    // Εύρεση πράκτορα με βάση το όνομα
+    Movement FindAgentByName(string name)
+    {
+        GameObject agentObject = GameObject.Find(name);
+        if (agentObject == null)
+        {
+            Debug.LogWarning($"No GameObject found with name: {name}");
+            return null;
+        }
+
+        Movement movement = agentObject.GetComponent<Movement>();
+        if (movement == null)
+        {
+            Debug.LogWarning($"Movement script not found on {name}");
+            return null;
+        }
+
+        return movement;
+    }
+
+    // Εξαγωγή θέσης από την περιγραφή
+    private Vector3 ExtractPosition(string line)
+    {
+        try
+        {
+            string[] parts = line.Split(new[] { '(', ',', ')' }, StringSplitOptions.RemoveEmptyEntries);
+            float x = float.Parse(parts[1].Split(':')[1].Trim());
+            float y = float.Parse(parts[2].Split(':')[1].Trim());
+            float z = float.Parse(parts[3].Split(':')[1].Trim());
+            return new Vector3(x, y, z);
+        }
+        catch (Exception e)
+        {
+            Debug.LogError($"Error extracting position from line '{line}': {e.Message}");
+            return Vector3.zero;
+        }
+    }
+
+    // Ανακατεύουμε τη λίστα
     private void Shuffle<T>(List<T> list)
     {
         System.Random rng = new System.Random();
@@ -100,164 +210,21 @@ public class AgentsPlans : MonoBehaviour
         }
     }
 
+    // Σύνθεση ονόματος πράκτορα
+    private string GetAgentName(int index) => "Agent" + index;
+
+    // Κλάση στόχου πράκτορα
     public class AgentGoal
     {
-        public Vector3 TargetPosition { get; set; }
-        public string Action { get; set; }
-        public string Description { get; set; }
-    }
+        public string Action { get; }
+        public Vector3 TargetPosition { get; }
+        public string Description { get; }
 
-    private Vector3 ExtractPosition(string line)
-    {
-        try
+        public AgentGoal(string action, Vector3 targetPosition, string description)
         {
-            string[] parts = line.Split(new[] { '(', ',', ')' }, StringSplitOptions.RemoveEmptyEntries);
-            float x = float.Parse(parts[1].Split(':')[1].Trim());
-            float y = float.Parse(parts[2].Split(':')[1].Trim());
-            float z = float.Parse(parts[3].Split(':')[1].Trim());
-            //return new Vector3(x, y, z);
-            Vector3 position = new Vector3(x, y, z);
-            Debug.Log($"Extracted position: {position}");
-            return position;
-        }
-        catch (Exception e)
-        {
-            Debug.LogError($"Error extracting position from line '{line}': {e.Message}");
-            return Vector3.zero;
+            Action = action;
+            TargetPosition = targetPosition;
+            Description = description;
         }
     }
-    void ExecutePlans()
-    {
-        try
-        {
-            // Διαβάζουμε τα πλάνα
-            List<string> agentsPlans = new List<string>(File.ReadAllLines(filePath2));
-
-            int currentAgent = -1; // Ορίζει ποιος πράκτορας εκτελείται
-            foreach (string line in agentsPlans)
-            {
-                if (line.StartsWith("BEGINPLAN"))
-                {
-                    currentAgent = ExtractAgentID(line); // Βρες το ID του Agent
-                }
-                else if (line.StartsWith("ENDPLAN"))
-                {
-                    currentAgent = -1; // Τερματισμός εκτέλεσης πλάνου
-                }
-                else if (currentAgent != -1)
-                {
-                    // Ανάλυση της γραμμής του πλάνου (λίστα στόχων)
-                    string[] targets = line.Split(' '); // Διαχωρισμός στόχων
-                    MoveAgent(currentAgent, targets);  // Μετακίνηση πράκτορα
-                }
-            }
-        }
-        catch (Exception e)
-        {
-            Debug.LogError("Error executing agent plans: " + e.Message);
-        }
-    }
-    void MoveAgent(int agentID, string[] targets)
-    {
-        Debug.Log($"Attempting to move Agent {agentID} with targets: {string.Join(", ", targets)}");
-        GameObject agent = GameObject.Find($"Agent{agentID}");
-        if (agent != null)
-        {
-            Movement movement = agent.GetComponent<Movement>();
-            if (movement != null)
-            {
-                Debug.Log($"Starting movement sequence for {agent.name}");
-                StartCoroutine(ExecuteTargetSequence(movement, targets));
-            }
-            else
-            {
-                Debug.LogError($"Movement script missing on {agent.name}");
-            }
-        }
-        else
-        {
-            Debug.LogWarning($"Agent{agentID} not found in the scene!");
-        }
-    }
-
-    /* void MoveAgent(int agentID, string[] targets)
-     {
-         if (agents.TryGetValue(agentID, out GameObject agent))
-         {
-             Movement movement = agent.GetComponent<Movement>();
-             if (movement != null)
-             {
-                 Debug.Log($"Starting movement for {agent.name}");
-                 StartCoroutine(ExecuteTargetSequence(movement, targets));
-             }
-             else
-             {
-                 Debug.LogError($"Movement script missing on {agent.name}");
-             }
-         }
-         else
-         {
-             Debug.LogWarning($"Agent {agentID} not found!");
-         } 
-     }*/
-
-
-    // Εκτέλεση της ακολουθίας στόχων
-    IEnumerator ExecuteTargetSequence(Movement movement, string[] targets)
-    {
-        Debug.Log($"Executing target sequence for {movement.gameObject.name} with {targets.Length} targets.");
-        foreach (string target in targets)
-        {
-            Debug.Log($"Looking for building with symbol: {target}");
-            GameObject building = FindBuildingBySymbol(target);
-            if (building != null)
-            {
-                Vector3 targetPosition = building.transform.position;
-                Debug.Log($"{movement.gameObject.name} moving to {targetPosition} (Target: {target})");
-                movement.SetTarget(targetPosition);
-
-                while (!movement.HasReachedTarget())
-                {
-                    yield return null; // Wait until the agent reaches the target
-                }
-
-                Debug.Log($"{movement.gameObject.name} reached {targetPosition}");
-                yield return new WaitForSeconds(1.0f); // Simulate staying at the target
-            }
-            else
-            {
-                Debug.LogWarning($"Target {target} not found for {movement.gameObject.name}");
-            }
-        }
-    }
-
-
-
-    GameObject FindBuildingBySymbol(string symbol)
-        {
-            GameObject[] buildings = GameObject.FindGameObjectsWithTag("Building");
-            foreach (GameObject building in buildings)
-            {
-                if (building.name.Contains(symbol)) // Ensure building name includes the symbol
-                {
-                    Debug.Log($"Found building {building.name} for symbol {symbol}");
-                    return building;
-                }
-            }
-            Debug.LogWarning($"Building with symbol {symbol} not found!");
-            return null;
-        }
-
-
-        // Εξαγωγή του ID από το όνομα του πράκτορα
-        int ExtractAgentID(string line)
-        {
-            string[] parts = line.Split(' ');
-            if (parts.Length >= 2 && int.TryParse(parts[1], out int id))
-            {
-                return id;
-            }
-            return -1; // Αν αποτύχει
-        }
-    
 }

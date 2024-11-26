@@ -5733,7 +5733,7 @@ PrefabInstance:
     - target: {fileID: 3790425855979379719, guid: d9eb976dc2ae4ca41ab78ef91b4d2fd9,
         type: 3}
       propertyPath: m_Name
-      value: AdamIdle
+      value: Agent1
       objectReference: {fileID: 0}
     - target: {fileID: 4598628868481025725, guid: d9eb976dc2ae4ca41ab78ef91b4d2fd9,
         type: 3}
@@ -5784,6 +5784,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7801066434933227708, guid: d9eb976dc2ae4ca41ab78ef91b4d2fd9,
+        type: 3}
+      propertyPath: target
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -32429,7 +32434,7 @@ PrefabInstance:
     - target: {fileID: 846661902835506962, guid: 2fbedee61307cfe4486af538a12bcfc1,
         type: 3}
       propertyPath: m_Name
-      value: MeganIdle
+      value: Agent3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -72797,7 +72802,12 @@ PrefabInstance:
     - target: {fileID: 705309145037583837, guid: c16ad29cd801bc741a9c4313574c6fa2,
         type: 3}
       propertyPath: m_Name
-      value: SophieIdle
+      value: Agent5
+      objectReference: {fileID: 0}
+    - target: {fileID: 4535886818041382187, guid: c16ad29cd801bc741a9c4313574c6fa2,
+        type: 3}
+      propertyPath: target
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -94760,7 +94770,7 @@ PrefabInstance:
     - target: {fileID: 3155955919319810775, guid: e2dabc9cbab92554ba784ddc472d70df,
         type: 3}
       propertyPath: m_Name
-      value: JoshIdle
+      value: Agent2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -98993,7 +99003,7 @@ PrefabInstance:
     - target: {fileID: 2910010957518404026, guid: 063b5aac5b4acdb49a90060ed4f817f3,
         type: 3}
       propertyPath: m_Name
-      value: ShannonIdle
+      value: Agent4
       objectReference: {fileID: 0}
     - target: {fileID: 8487477650425477498, guid: 063b5aac5b4acdb49a90060ed4f817f3,
         type: 3}
@@ -108770,6 +108780,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 42f1de4b0aefa9b4baf1b6c7c1f1f42f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  agents: []
 --- !u!65 &2078092470
 BoxCollider:
   m_ObjectHideFlags: 0
