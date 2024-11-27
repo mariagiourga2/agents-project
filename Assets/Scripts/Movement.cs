@@ -17,8 +17,8 @@ public class Movement : MonoBehaviour
             Debug.LogError($"NavMeshAgent missing on {gameObject.name}. Please attach one.");
             return;
         }
-
-        Debug.Log($"{gameObject.name} NavMeshAgent initialized.");
+        
+        Debug.Log($"{gameObject.name} NavMeshAgent initialized.");//edv
 
         // Αν έχει οριστεί προορισμός, ορίζουμε τη θέση
         if (target != null)
@@ -32,17 +32,30 @@ public class Movement : MonoBehaviour
         }
     }
 
-    public void SetTarget(Vector3 targetPosition)
-    {
-        if (agent == null)
-        {
-            Debug.LogError($"{gameObject.name}: NavMeshAgent not initialized!");
-            return;
-        }
+    /* public void SetTarget(Vector3 targetPosition)
+     {
+         if (agent == null)
+         {
+             Debug.LogError($"{gameObject.name}: NavMeshAgent not initialized!");
+             return;
+         }
 
-        agent.SetDestination(targetPosition);
-        Debug.Log($"{gameObject.name}: Target set to {targetPosition}");
+         agent.SetDestination(targetPosition);
+         Debug.Log($"{gameObject.name}: Target set to {targetPosition}");
+     }*/
+    public void SetTarget(Vector3 targetPositiont)
+    {
+        if (agent != null && agent.isActiveAndEnabled)
+        {
+            agent.SetDestination(targetPositiont);
+            Debug.Log($"{gameObject.name} έχει νέο στόχο: {targetPositiont}");
+        }
+        else
+        {
+            Debug.LogWarning($"Ο πράκτορας {gameObject.name} δεν είναι ενεργός ή δεν έχει NavMeshAgent!");
+        }
     }
+
 
     public bool HasReachedTarget()
     {

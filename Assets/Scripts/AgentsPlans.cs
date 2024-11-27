@@ -98,11 +98,16 @@ public class AgentsPlans : MonoBehaviour
         try
         {
             Debug.Log($"Executing plans from file: {filePath}");
-            string[] lines = File.ReadAllLines(filePath);
-            Movement currentAgent = null;
-            List<AgentGoal> allGoals = new List<AgentGoal>();
 
-            // Διαβάζουμε και εκτελούμε τα σχέδια
+            if (!File.Exists(filePath))
+            {
+                Debug.LogError($"File not found: {filePath}");
+                return;
+            }
+
+            string[] lines = File.ReadAllLines(filePath);
+            AgentsIdle currentAgent = null;
+
             foreach (string line in lines)
             {
                 if (string.IsNullOrWhiteSpace(line)) continue;
@@ -110,23 +115,33 @@ public class AgentsPlans : MonoBehaviour
                 if (line.Contains(":"))
                 {
                     string agentName = line.Split(':')[0].Trim();
-                    currentAgent = FindAgentByName(agentName);
-                    if (currentAgent == null)
+                    GameObject agentObject = GameObject.Find(agentName);
+
+                    if (agentObject == null)
                     {
                         Debug.LogWarning($"Agent not found: {agentName}");
                         continue;
                     }
+
+                    currentAgent = agentObject.GetComponent<AgentsIdle>();
+                    if (currentAgent == null)
+                    {
+                        Debug.LogWarning($"AgentsIdle script not found on {agentName}");
+                    }
                     continue;
                 }
 
-                // Αντιστοίχιση στόχου
-                if (currentAgent != null && line.Contains("("))
+                if (line.Contains("(") && currentAgent != null)
                 {
                     Vector3 targetPosition = ParseTarget(line);
                     if (targetPosition != Vector3.zero)
                     {
-                        currentAgent.SetTarget(targetPosition);
+                        currentAgent.AssignNewDestination(targetPosition);
                         Debug.Log($"Assigned target {targetPosition} to {currentAgent.gameObject.name}");
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Invalid target position in line: {line}");
                     }
                 }
             }
@@ -138,25 +153,34 @@ public class AgentsPlans : MonoBehaviour
     }
 
     // Ανάλυση στόχου από τη γραμμή κειμένου
-    Vector3 ParseTarget(string line)
+    private Vector3 ParseTarget(string line)
     {
         try
         {
-            string[] coords = line.Trim('(', ')').Split(',');
-            if (coords.Length == 3 &&
-                float.TryParse(coords[0], out float x) &&
-                float.TryParse(coords[1], out float y) &&
-                float.TryParse(coords[2], out float z))
+            // Αφαίρεση κενών και παρενθέσεων
+            string cleanLine = line.Trim().Trim('(', ')');
+            string[] parts = cleanLine.Split(',');
+
+            if (parts.Length != 3)
             {
-                return new Vector3(x, y, z);
+                Debug.LogWarning($"Invalid target format: {line}");
+                return Vector3.zero;
             }
+
+            // Μετατροπή σε float χωρίς στρογγυλοποίηση
+            float x = float.Parse(parts[0].Trim(), System.Globalization.CultureInfo.InvariantCulture);
+            float y = float.Parse(parts[1].Trim(), System.Globalization.CultureInfo.InvariantCulture);
+            float z = float.Parse(parts[2].Trim(), System.Globalization.CultureInfo.InvariantCulture);
+
+            return new Vector3(x, y, z);
         }
         catch (Exception e)
         {
-            Debug.LogError($"Error parsing target from line '{line}': {e.Message}");
+            Debug.LogWarning($"Failed to parse target position: {line}. Error: {e.Message}");
+            return Vector3.zero;
         }
-        return Vector3.zero;
     }
+
 
     // Εύρεση πράκτορα με βάση το όνομα
     Movement FindAgentByName(string name)
@@ -227,4 +251,5 @@ public class AgentsPlans : MonoBehaviour
             Description = description;
         }
     }
+
 }
