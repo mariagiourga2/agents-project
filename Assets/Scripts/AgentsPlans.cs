@@ -22,6 +22,11 @@ public class AgentsPlans : MonoBehaviour
             Debug.LogError("city_description.txt not found!");
             return;
         }
+        if (!File.Exists(filePath2))
+        {
+            Debug.LogError("agents_plans.txt not found!");
+            return;
+        }
 
         List<string> cityDescription = new List<string>(File.ReadAllLines(filePath1));
         List<AgentGoal> importantGoals = ExtractImportantGoals(cityDescription);
