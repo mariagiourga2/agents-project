@@ -6,7 +6,8 @@ using UnityEngine.AI;
 public class Movement : MonoBehaviour
 {
     private NavMeshAgent agent; // Αναφορά στον NavMeshAgent
-    public Transform target;   // Προορισμός του πράκτορα
+    public Transform[] targets;   // Προορισμοί (στόχοι) από τη λίστα
+    private int currentTargetIndex = 0; // Δείκτης για τον τρέχοντα στόχο
 
     void Start()
     {
@@ -14,58 +15,60 @@ public class Movement : MonoBehaviour
         agent = GetComponent<NavMeshAgent>();
         if (agent == null)
         {
-            Debug.LogError($"NavMeshAgent missing on {gameObject.name}. Please attach one.");
+            //Debug.LogError($"NavMeshAgent missing on {gameObject.name}. Please attach one.");
             return;
         }
-        
-        Debug.Log($"{gameObject.name} NavMeshAgent initialized.");//edv
 
-        // Αν έχει οριστεί προορισμός, ορίζουμε τη θέση
-        if (target != null)
+        //Debug.Log($"{gameObject.name} NavMeshAgent initialized.");//edv
+
+        // Αν υπάρχουν στόχοι, θέτουμε τον αρχικό προορισμό
+        if (targets.Length > 0)
         {
-            agent.SetDestination(target.position);
-            Debug.Log($"{gameObject.name}: Initial destination set to {target.position}");
+            agent.SetDestination(targets[currentTargetIndex].position);
+            Debug.Log($"{gameObject.name}: Initial destination set to {targets[currentTargetIndex].position}");
         }
         else
         {
-            Debug.LogWarning($"Target is not assigned for {gameObject.name}. Set a target to move the agent.");
+            Debug.LogWarning($"No targets assigned for {gameObject.name}. Set targets to move the agent.");
         }
     }
 
-    /* public void SetTarget(Vector3 targetPosition)
-     {
-         if (agent == null)
-         {
-             Debug.LogError($"{gameObject.name}: NavMeshAgent not initialized!");
-             return;
-         }
+    void Update()
+    {
+        // Αν ο πράκτορας έχει φτάσει στον τρέχοντα στόχο, προχωρά στον επόμενο
+        if (agent.remainingDistance <= agent.stoppingDistance && !agent.pathPending)
+        {
+            // Όταν φτάσει στον τρέχοντα στόχο, προχωράμε στον επόμενο
+            currentTargetIndex++;
+            if (currentTargetIndex < targets.Length)
+            {
+                agent.SetDestination(targets[currentTargetIndex].position);
+                Debug.Log($"{gameObject.name}: Moving to next target: {targets[currentTargetIndex].position}");
+            }
+            else
+            {
+               // Debug.Log($"{gameObject.name}: All targets reached.");
+            }
+        }
+    }
 
-         agent.SetDestination(targetPosition);
-         Debug.Log($"{gameObject.name}: Target set to {targetPosition}");
-     }*/
-    public void SetTarget(Vector3 targetPositiont)
+
+    public void SetTarget(Vector3 targetPosition)
     {
         if (agent != null && agent.isActiveAndEnabled)
         {
-            agent.SetDestination(targetPositiont);
-            Debug.Log($"{gameObject.name} έχει νέο στόχο: {targetPositiont}");
+            agent.SetDestination(targetPosition);
+            Debug.Log($"{gameObject.name} has new target: {targetPosition}");
         }
         else
         {
-            Debug.LogWarning($"Ο πράκτορας {gameObject.name} δεν είναι ενεργός ή δεν έχει NavMeshAgent!");
+            Debug.LogWarning($"Agent {gameObject.name} is not active or does not have NavMeshAgent!");
         }
     }
 
 
     public bool HasReachedTarget()
     {
-        if (agent == null)
-        {
-            Debug.LogError($"{gameObject.name}: NavMeshAgent is null!");
-            return false;
-        }
-
-        // Ελέγχει αν ο πράκτορας δεν έχει εκκρεμή μονοπάτια και έχει φτάσει στη θέση
         bool hasReached = !agent.pathPending &&
                           agent.remainingDistance <= agent.stoppingDistance &&
                           (!agent.hasPath || agent.velocity.sqrMagnitude == 0f);
@@ -73,4 +76,5 @@ public class Movement : MonoBehaviour
         Debug.Log($"{gameObject.name}: HasReachedTarget: {hasReached}, RemainingDistance: {agent.remainingDistance}");
         return hasReached;
     }
+
 }

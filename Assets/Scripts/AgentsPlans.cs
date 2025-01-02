@@ -97,7 +97,7 @@ public class AgentsPlans : MonoBehaviour
     {
         try
         {
-            Debug.Log($"Executing plans from file: {filePath}");
+            //Debug.Log($"Executing plans from file: {filePath}");
 
             if (!File.Exists(filePath))
             {
@@ -137,11 +137,11 @@ public class AgentsPlans : MonoBehaviour
                     if (targetPosition != Vector3.zero)
                     {
                         currentAgent.AssignNewDestination(targetPosition);
-                        Debug.Log($"Assigned target {targetPosition} to {currentAgent.gameObject.name}");
+                        //Debug.Log($"Assigned target {targetPosition} to {currentAgent.gameObject.name}");
                     }
                     else
                     {
-                        Debug.LogWarning($"Invalid target position in line: {line}");
+                        //Debug.LogWarning($"Invalid target position in line: {line}");
                     }
                 }
             }
@@ -163,7 +163,7 @@ public class AgentsPlans : MonoBehaviour
 
             if (parts.Length != 3)
             {
-                Debug.LogWarning($"Invalid target format: {line}");
+                //Debug.LogWarning($"Invalid target format: {line}");
                 return Vector3.zero;
             }
 
@@ -188,14 +188,14 @@ public class AgentsPlans : MonoBehaviour
         GameObject agentObject = GameObject.Find(name);
         if (agentObject == null)
         {
-            Debug.LogWarning($"No GameObject found with name: {name}");
+            //Debug.LogWarning($"No GameObject found with name: {name}");
             return null;
         }
 
         Movement movement = agentObject.GetComponent<Movement>();
         if (movement == null)
         {
-            Debug.LogWarning($"Movement script not found on {name}");
+            //Debug.LogWarning($"Movement script not found on {name}");
             return null;
         }
 
