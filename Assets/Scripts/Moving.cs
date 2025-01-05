@@ -6,35 +6,32 @@ using UnityEngine;
 
 public class Moving : MonoBehaviour
 {
-    public Vector3 homePosition; // Agent's home position
-    public Queue<Vector3> plan = new Queue<Vector3>(); // Agent's target building plan
-    public float moveSpeed = 6f; // Movement speed
+    public Vector3 homePosition; 
+    public Queue<Vector3> plan = new Queue<Vector3>(); 
+    public float moveSpeed = 6f; 
 
     private Vector3 randomDirection;
-    private float changeDirectionInterval = 2f; // Time interval for changing direction
+    private float changeDirectionInterval = 2f;
     private float timeSinceDirectionChange = 0f;
 
     void Start()
     {
-        LoadPlan(); // Load the agent's unique plan from the file
-        ChooseRandomDirection(); // Choose an initial random direction
+        LoadPlan();
+        ChooseRandomDirection(); 
     }
 
     void Update()
     {
         timeSinceDirectionChange += Time.deltaTime;
 
-        // Randomly change direction every changeDirectionInterval
         if (timeSinceDirectionChange >= changeDirectionInterval)
         {
             ChooseRandomDirection();
             timeSinceDirectionChange = 0f;
         }
 
-        // Move randomly
         MoveRandomly();
 
-        // Check if the agent reached the current target and proceed to the next one
         CheckPlanTargets();
     }
 
@@ -62,7 +59,7 @@ public class Moving : MonoBehaviour
 
             foreach (string line in lines)
             {
-                if (line.StartsWith(name + ":")) // Look for the agent's specific plan in the file
+                if (line.StartsWith(name + ":"))
                 {
                     agentFound = true;
                     continue;
@@ -70,7 +67,7 @@ public class Moving : MonoBehaviour
 
                 if (agentFound)
                 {
-                    if (string.IsNullOrWhiteSpace(line)) break; // End of the agent's plan
+                    if (string.IsNullOrWhiteSpace(line)) break;
 
                     string cleanedLine = line.Trim();
                     string[] parts = cleanedLine.Trim(new char[] { '(', ')' }).Split(',');
@@ -82,7 +79,7 @@ public class Moving : MonoBehaviour
                             float x = float.Parse(parts[0].Trim(), System.Globalization.CultureInfo.InvariantCulture);
                             float y = float.Parse(parts[1].Trim(), System.Globalization.CultureInfo.InvariantCulture);
                             float z = float.Parse(parts[2].Trim(), System.Globalization.CultureInfo.InvariantCulture);
-                            plan.Enqueue(new Vector3(x, y, z)); // Add target to the agent's plan
+                            plan.Enqueue(new Vector3(x, y, z));
                             Debug.Log($"Added point ({x}, {y}, {z}) to {name}'s plan");
                         }
                         catch (FormatException ex)
@@ -108,14 +105,12 @@ public class Moving : MonoBehaviour
     {
         if (plan.Count > 0)
         {
-            Vector3 target = plan.Peek(); // Get the first target in the plan
+            Vector3 target = plan.Peek(); 
 
-            // Check if the agent is close enough to the target (within a threshold)
             if (Vector3.Distance(transform.position, target) < 1.0f)
             {
                 Debug.Log($"{name} reached target {target}");
 
-                // Remove the target from the plan
                 plan.Dequeue();
             }
         }
